@@ -5,10 +5,6 @@
 package com.mycompany.jogo_da_memoria;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -28,12 +24,13 @@ public class Jogo extends javax.swing.JFrame {
     private int posicao_da_casa2;
     JButton[] botoes;
 
-    public void bloquearBotoes(boolean estado) {
-        // Percorre todos os botões e define o estado (true para habilitar, false para desabilitar)
-        for (JButton botao : botoes) {
-            botao.setEnabled(estado);
+public void bloquearBotoes(boolean estado) {
+    for (int i = 0; i < 16; i++) {
+        if (vetor_verificador[i] == 0) {
+            botoes[i].setEnabled(estado);
         }
     }
+}
 
     public void rodada(int verificar, int posicao) {
 
@@ -55,6 +52,8 @@ public class Jogo extends javax.swing.JFrame {
             if (valor_da_casa1 == valor_da_casa2) {
                 vetor_verificador[posicao_da_casa1] = valor_da_casa1;
                 vetor_verificador[posicao_da_casa2] = valor_da_casa2;
+                botoes[posicao_da_casa1].setEnabled(false);
+                botoes[posicao_da_casa2].setEnabled(false);
 
                 if (vez_de_quem == 1) {
                     placar_jogador1 += 1;
