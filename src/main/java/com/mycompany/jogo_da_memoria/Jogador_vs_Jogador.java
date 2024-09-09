@@ -53,6 +53,16 @@ public class Jogador_vs_Jogador extends Jogo {
                 } else {
                     bloquearBotoes(true);
                 }
+                
+                if(placar_jogador1 + placar_jogador2 == 8 && placar_jogador1 > placar_jogador2){
+                    controle_vez.setText("VENCEDOR: JOGADOR 1");
+                } 
+                else if (placar_jogador1 + placar_jogador2 == 8 && placar_jogador1 < placar_jogador2) {
+                    controle_vez.setText("VENCEDOR: JOGADOR 2");
+                }
+                else {
+                    bloquearBotoes(true);
+                }
 
             } else {
                 // Usar um Timer para atrasar a ação de esconder as cartas
