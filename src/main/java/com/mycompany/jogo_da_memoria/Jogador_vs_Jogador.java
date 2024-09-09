@@ -72,10 +72,10 @@ public class Jogador_vs_Jogador extends Jogo {
 
                     if (vez_de_quem == 1) {
                         vez_de_quem = 2;
-                        controle_vez.setText("Vez do: " + String.valueOf(vez_de_quem));
+                        controle_vez.setText("Vez do jogador: " + String.valueOf(vez_de_quem));
                     } else {
                         vez_de_quem = 1;
-                        controle_vez.setText("Vez do: " + String.valueOf(vez_de_quem));
+                        controle_vez.setText("Vez do jogador: " + String.valueOf(vez_de_quem));
                     }
 
                     bloquearBotoes(true);
