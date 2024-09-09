@@ -12,86 +12,28 @@ import javax.swing.*;
  */
 public class Jogo extends javax.swing.JFrame {
 
-    private Tabuleiro tabuleiro;
-    private int verificacao = 1;
-    private int vez_de_quem = 1;
-    private int placar_jogador1 = 0;
-    private int placar_jogador2 = 0;
-    private int vetor_verificador[] = new int[16];
-    private int valor_da_casa1;
-    private int valor_da_casa2;
-    private int posicao_da_casa1;
-    private int posicao_da_casa2;
+    public Tabuleiro tabuleiro;
+    public int verificacao = 1;
+    public int vez_de_quem = 1;
+    public int placar_jogador1 = 0;
+    public int placar_jogador2 = 0;
+    public int vetor_verificador[] = new int[16];
+    public int valor_da_casa1;
+    public int valor_da_casa2;
+    public int posicao_da_casa1;
+    public int posicao_da_casa2;
     JButton[] botoes;
 
-public void bloquearBotoes(boolean estado) {
-    for (int i = 0; i < 16; i++) {
-        if (vetor_verificador[i] == 0) {
-            botoes[i].setEnabled(estado);
+    public void bloquearBotoes(boolean estado) {
+        for (int i = 0; i < 16; i++) {
+            if (vetor_verificador[i] == 0) {
+                botoes[i].setEnabled(estado);
+            }
         }
     }
-}
 
     public void rodada(int verificar, int posicao) {
 
-        posicao -= 1;
-
-        if (verificar == 1) {
-            valor_da_casa1 = tabuleiro.board[posicao];
-            posicao_da_casa1 = posicao;
-            botoes[posicao_da_casa1].setText(String.valueOf(valor_da_casa1));
-        } else {
-
-            // Desabilitar todos os botões antes de qualquer ação
-            bloquearBotoes(false);
-
-            valor_da_casa2 = tabuleiro.board[posicao];
-            posicao_da_casa2 = posicao;
-            botoes[posicao_da_casa2].setText(String.valueOf(valor_da_casa2));
-
-            if (valor_da_casa1 == valor_da_casa2) {
-                vetor_verificador[posicao_da_casa1] = valor_da_casa1;
-                vetor_verificador[posicao_da_casa2] = valor_da_casa2;
-                botoes[posicao_da_casa1].setEnabled(false);
-                botoes[posicao_da_casa2].setEnabled(false);
-
-                if (vez_de_quem == 1) {
-                    placar_jogador1 += 1;
-                    placar1.setText(String.valueOf(placar_jogador1));
-                } else {
-                    placar_jogador2 += 1;
-                    placar2.setText(String.valueOf(placar_jogador2));
-                }
-                
-                if (placar_jogador1 + placar_jogador2 == 8){
-                    controle_vez.setText("JOGO ACABOU");
-                }
-                else{
-                    bloquearBotoes(true);
-                }
-                
-
-            } else {
-                // Usar um Timer para atrasar a ação de esconder as cartas
-                Timer timer = new Timer(1000, e -> {
-                    botoes[posicao_da_casa1].setText("");
-                    botoes[posicao_da_casa2].setText("");
-
-                    if (vez_de_quem == 1) {
-                        vez_de_quem = 2;
-                        controle_vez.setText(String.valueOf(vez_de_quem));
-                    } else {
-                        vez_de_quem = 1;
-                        controle_vez.setText(String.valueOf(vez_de_quem));
-                    }
-
-                    bloquearBotoes(true);
-                });
-                timer.setRepeats(false); // Garantir que o Timer só execute uma vez
-                timer.start();
-            }
-
-        }
     }
 
     /**
@@ -258,9 +200,9 @@ public void bloquearBotoes(boolean estado) {
             }
         });
 
-        placar1.setText("Jogador 1: 0");
+        placar1.setText("Jogador 1: 0 pontos");
 
-        placar2.setText("Jogador 2: 0");
+        placar2.setText("Jogador 2: 0 pontos");
 
         controle_vez.setText("Vez do jogador: 1");
 
@@ -565,25 +507,25 @@ public void bloquearBotoes(boolean estado) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel controle_vez;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
+    public javax.swing.JLabel controle_vez;
+    public javax.swing.JButton jButton1;
+    public javax.swing.JButton jButton10;
+    public javax.swing.JButton jButton11;
+    public javax.swing.JButton jButton12;
+    public javax.swing.JButton jButton13;
+    public javax.swing.JButton jButton14;
+    public javax.swing.JButton jButton15;
+    public javax.swing.JButton jButton16;
+    public javax.swing.JButton jButton2;
+    public javax.swing.JButton jButton3;
+    public javax.swing.JButton jButton4;
+    public javax.swing.JButton jButton5;
+    public javax.swing.JButton jButton6;
+    public javax.swing.JButton jButton7;
+    public javax.swing.JButton jButton8;
+    public javax.swing.JButton jButton9;
     private java.awt.Label label1;
-    private javax.swing.JLabel placar1;
-    private javax.swing.JLabel placar2;
+    public javax.swing.JLabel placar1;
+    public javax.swing.JLabel placar2;
     // End of variables declaration//GEN-END:variables
 }

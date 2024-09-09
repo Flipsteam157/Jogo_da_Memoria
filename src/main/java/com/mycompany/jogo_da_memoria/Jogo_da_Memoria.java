@@ -12,7 +12,7 @@ public class Jogo_da_Memoria {
 
     public static void main(String[] args) {
         
-        Jogo jogo = new Jogo();
+        Jogo jogo = new Jogador_vs_Jogador();
         jogo.setVisible(true);
         
     }
