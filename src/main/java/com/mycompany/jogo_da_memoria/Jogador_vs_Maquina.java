@@ -12,6 +12,7 @@ public class Jogador_vs_Maquina extends Jogo {
 
     public Jogador_vs_Maquina() {
         super();
+        placar2.setText("Máquina: 0 Pontos");
     }
 
     @Override
@@ -40,7 +41,7 @@ public class Jogador_vs_Maquina extends Jogo {
                     placar1.setText("Jogador 1: " + placar_jogador1 + " Pontos");
                 } else {
                     placar_jogador2 += 1;
-                    placar2.setText("Jogador 2: " + placar_jogador2 + " Pontos");
+                    placar2.setText("Máquina: " + placar_jogador2 + " Pontos");
                 }
 
                 if (placar_jogador1 + placar_jogador2 == 8) {
@@ -108,6 +109,10 @@ public class Jogador_vs_Maquina extends Jogo {
         while (posicao1 == posicao2) {
             posicao2 = escolherPosicaoAleatoria();
         }
+
+        // Armazena as posições aleatórias reveladas pela máquina na memória
+        memoria.put(posicao1, tabuleiro.board[posicao1]);
+        memoria.put(posicao2, tabuleiro.board[posicao2]);
 
         executarJogada(posicao1 + 1, posicao2 + 1);
     }
