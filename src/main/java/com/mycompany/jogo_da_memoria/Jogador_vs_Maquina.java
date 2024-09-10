@@ -1,19 +1,17 @@
 package com.mycompany.jogo_da_memoria;
 
+import javax.swing.Timer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import javax.swing.Timer;
 
 public class Jogador_vs_Maquina extends Jogo {
 
-    private final Map<Integer, Integer> memoriaCartas;
-    private final Random random;
+    private final Map<Integer, Integer> memoria = new HashMap<>();
+    private final Random random = new Random();
 
     public Jogador_vs_Maquina() {
         super();
-        memoriaCartas = new HashMap<>();
-        random = new Random();
     }
 
     @Override
@@ -24,12 +22,12 @@ public class Jogador_vs_Maquina extends Jogo {
             valor_da_casa1 = tabuleiro.board[posicao];
             posicao_da_casa1 = posicao;
             botoes[posicao_da_casa1].setText(String.valueOf(valor_da_casa1));
+            memoria.put(posicao_da_casa1, valor_da_casa1);
         } else {
-            bloquearBotoes(false);
-
             valor_da_casa2 = tabuleiro.board[posicao];
             posicao_da_casa2 = posicao;
             botoes[posicao_da_casa2].setText(String.valueOf(valor_da_casa2));
+            memoria.put(posicao_da_casa2, valor_da_casa2);
 
             if (valor_da_casa1 == valor_da_casa2) {
                 vetor_verificador[posicao_da_casa1] = valor_da_casa1;
@@ -39,18 +37,21 @@ public class Jogador_vs_Maquina extends Jogo {
 
                 if (vez_de_quem == 1) {
                     placar_jogador1 += 1;
-                    placar1.setText("Jogador 1: " + String.valueOf(placar_jogador1) + " Pontos");
+                    placar1.setText("Jogador 1: " + placar_jogador1 + " Pontos");
                 } else {
                     placar_jogador2 += 1;
-                    placar2.setText("Jogador 2: " + String.valueOf(placar_jogador2) + " Pontos");
+                    placar2.setText("Jogador 2: " + placar_jogador2 + " Pontos");
                 }
 
                 if (placar_jogador1 + placar_jogador2 == 8) {
                     controle_vez.setText("JOGO ACABOU");
+                    mostrarVencedor();
                 } else {
-                    // Se a máquina acertou um par, ela joga novamente
+                    // Máquina continua jogando se for a vez dela
                     if (vez_de_quem == 2) {
-                        Timer timer = new Timer(500, e -> maquinaFazJogada());
+                        Timer timer = new Timer(1000, e -> {
+                            maquinaJoga();
+                        });
                         timer.setRepeats(false);
                         timer.start();
                     } else {
@@ -58,22 +59,23 @@ public class Jogador_vs_Maquina extends Jogo {
                     }
                 }
             } else {
+                // Usar um Timer para atrasar a ação de esconder as cartas
                 Timer timer = new Timer(1000, e -> {
                     botoes[posicao_da_casa1].setText("");
                     botoes[posicao_da_casa2].setText("");
 
                     if (vez_de_quem == 1) {
                         vez_de_quem = 2;
-                        controle_vez.setText("Vez do: " + String.valueOf(vez_de_quem));
+                        controle_vez.setText("Vez da máquina");
+                        Timer machineTurnTimer = new Timer(500, evt -> maquinaJoga());
+                        machineTurnTimer.setRepeats(false);
+                        machineTurnTimer.start();
                     } else {
                         vez_de_quem = 1;
-                        controle_vez.setText("Vez do: " + String.valueOf(vez_de_quem));
+                        controle_vez.setText("Vez do jogador");
                     }
 
                     bloquearBotoes(true);
-                    if (vez_de_quem == 2) {
-                        maquinaFazJogada(); // A máquina faz uma jogada quando é sua vez
-                    }
                 });
                 timer.setRepeats(false);
                 timer.start();
@@ -81,66 +83,58 @@ public class Jogador_vs_Maquina extends Jogo {
         }
     }
 
-    private void maquinaFazJogada() {
-        realizarJogadaAleatoria();
+    private void maquinaJoga() {
+        // Verifica se a máquina tem algum par na memória
+        for (Map.Entry<Integer, Integer> entry : memoria.entrySet()) {
+            int posicao1 = entry.getKey();
+            int valor1 = entry.getValue();
+
+            for (Map.Entry<Integer, Integer> entry2 : memoria.entrySet()) {
+                int posicao2 = entry2.getKey();
+                int valor2 = entry2.getValue();
+
+                if (posicao1 != posicao2 && valor1 == valor2 && vetor_verificador[posicao1] == 0 && vetor_verificador[posicao2] == 0) {
+                    // Encontrou um par
+                    executarJogada(posicao1 + 1, posicao2 + 1);
+                    return;
+                }
+            }
+        }
+
+        // Se não encontrou um par, escolhe posições aleatórias
+        int posicao1 = escolherPosicaoAleatoria();
+        int posicao2 = escolherPosicaoAleatoria();
+
+        while (posicao1 == posicao2) {
+            posicao2 = escolherPosicaoAleatoria();
+        }
+
+        executarJogada(posicao1 + 1, posicao2 + 1);
     }
 
-    private void realizarJogada(int pos1, int pos2) {
-        botoes[pos1].setText(String.valueOf(tabuleiro.board[pos1]));
-        botoes[pos2].setText(String.valueOf(tabuleiro.board[pos2]));
+    private int escolherPosicaoAleatoria() {
+        int posicao;
+        do {
+            posicao = random.nextInt(16);
+        } while (vetor_verificador[posicao] != 0);
+        return posicao;
+    }
 
-        Timer timer = new Timer(1000, e -> {
-            if (tabuleiro.board[pos1] == tabuleiro.board[pos2]) {
-                vetor_verificador[pos1] = tabuleiro.board[pos1];
-                vetor_verificador[pos2] = tabuleiro.board[pos2];
-                botoes[pos1].setEnabled(false);
-                botoes[pos2].setEnabled(false);
-
-                if (placar_jogador1 + placar_jogador2 == 8) {
-                    controle_vez.setText("JOGO ACABOU");
-                } else {
-                    // A máquina acertou um par, faz a jogada novamente
-                    if (vez_de_quem == 2) {
-                        Timer newTimer = new Timer(500, e2 -> maquinaFazJogada());
-                        newTimer.setRepeats(false);
-                        newTimer.start();
-                    }
-                }
-            } else {
-                botoes[pos1].setText("");
-                botoes[pos2].setText("");
-                vez_de_quem = 1;
-                controle_vez.setText("Vez do: " + String.valueOf(vez_de_quem));
-            }
-
-            bloquearBotoes(true);
-        });
+    private void executarJogada(int posicao1, int posicao2) {
+        // Simula a jogada da máquina
+        botoes[posicao1 - 1].doClick();
+        Timer timer = new Timer(1000, e -> botoes[posicao2 - 1].doClick());
         timer.setRepeats(false);
         timer.start();
     }
 
-
-    private int[] obterPosicoesDisponiveis() {
-        return java.util.stream.IntStream.range(0, 16)
-            .filter(i -> vetor_verificador[i] == 0)
-            .toArray();
-    }
-
-    private void realizarJogadaAleatoria() {
-        int[] posicoesDisponiveis = obterPosicoesDisponiveis();
-
-        if (posicoesDisponiveis.length < 2) {
-            return;
+    private void mostrarVencedor() {
+        if (placar_jogador1 > placar_jogador2) {
+            controle_vez.setText("VENCEDOR: JOGADOR 1");
+        } else if (placar_jogador1 < placar_jogador2) {
+            controle_vez.setText("VENCEDOR: MÁQUINA");
+        } else {
+            controle_vez.setText("EMPATE");
         }
-
-        int pos1 = posicoesDisponiveis[random.nextInt(posicoesDisponiveis.length)];
-        int pos2;
-
-        do {
-            pos2 = posicoesDisponiveis[random.nextInt(posicoesDisponiveis.length)];
-        } while (pos1 == pos2);
-
-        realizarJogada(pos1, pos2);
     }
-
 }

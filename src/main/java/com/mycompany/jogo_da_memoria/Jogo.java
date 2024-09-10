@@ -41,6 +41,13 @@ public class Jogo extends javax.swing.JFrame {
      */
     public Jogo() {
         tabuleiro = new Tabuleiro();
+        // Apenas para debugar
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                System.out.print(tabuleiro.board[i * 4 + j] + " ");
+            }
+            System.out.println();
+        }
         initComponents();
 
         for (int i = 0; i < 4; i++) {
