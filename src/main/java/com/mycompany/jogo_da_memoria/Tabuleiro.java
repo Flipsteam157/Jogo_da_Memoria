@@ -39,7 +39,4 @@ public class Tabuleiro {
         }
     }
 
-    //public int getNumberAt(int row, int col) {
-    //    return board[row][col];
-    //}
 }
