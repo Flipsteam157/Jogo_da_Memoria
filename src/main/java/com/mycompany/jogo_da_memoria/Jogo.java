@@ -22,6 +22,9 @@ public class Jogo extends javax.swing.JFrame {
     public int valor_da_casa2;
     public int posicao_da_casa1;
     public int posicao_da_casa2;
+    public String[] imagens = {"C:\\Imagens\\pokemon\\venusaur.png","C:\\Imagens\\pokemon\\blastoise.png", "C:\\Imagens\\pokemon\\charizard.png",
+    "C:\\Imagens\\pokemon\\rayquaza.png","C:\\Imagens\\pokemon\\mewtwo.png","C:\\Imagens\\pokemon\\pikachu.png",
+    "C:\\Imagens\\pokemon\\metagross.png", "C:\\Imagens\\pokemon\\dragonite.png",};
     JButton[] botoes;
 
     public void bloquearBotoes(boolean estado) {

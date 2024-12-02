@@ -4,6 +4,8 @@
  */
 package com.mycompany.jogo_da_memoria;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 /**
@@ -24,7 +26,12 @@ public class Jogador_vs_Jogador extends Jogo {
         if (verificar == 1) {
             valor_da_casa1 = tabuleiro.board[posicao];
             posicao_da_casa1 = posicao;
-            botoes[posicao_da_casa1].setText(String.valueOf(valor_da_casa1));
+            ImageIcon icone = new ImageIcon(imagens[valor_da_casa1 - 1]);
+            Image imagem = icone.getImage();
+            Image imagemFinal = imagem.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+            ImageIcon iconeFinal = new ImageIcon(imagemFinal);
+            botoes[posicao_da_casa1].setIcon(iconeFinal);
+            //botoes[posicao_da_casa1].setText(String.valueOf(valor_da_casa1));
         } else {
 
             // Desabilitar todos os botões antes de qualquer ação
@@ -32,7 +39,12 @@ public class Jogador_vs_Jogador extends Jogo {
 
             valor_da_casa2 = tabuleiro.board[posicao];
             posicao_da_casa2 = posicao;
-            botoes[posicao_da_casa2].setText(String.valueOf(valor_da_casa2));
+            ImageIcon icone = new ImageIcon(imagens[valor_da_casa2 - 1]);
+            Image imagem = icone.getImage();
+            Image imagemFinal = imagem.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+            ImageIcon iconeFinal = new ImageIcon(imagemFinal);
+            botoes[posicao_da_casa2].setIcon(iconeFinal);
+            //botoes[posicao_da_casa2].setText(String.valueOf(valor_da_casa2));
 
             if (valor_da_casa1 == valor_da_casa2) {
                 vetor_verificador[posicao_da_casa1] = valor_da_casa1;
@@ -58,16 +70,17 @@ public class Jogador_vs_Jogador extends Jogo {
                     controle_vez.setText("VENCEDOR: JOGADOR 1");
                 } else if (placar_jogador1 + placar_jogador2 == 8 && placar_jogador1 < placar_jogador2) {
                     controle_vez.setText("VENCEDOR: JOGADOR 2");
-                } else {
+                } else if (placar_jogador1 + placar_jogador2 == 8 && placar_jogador1 == placar_jogador2){
                     controle_vez.setText("EMPATE");
                 }
 
             } else {
                 // Usar um Timer para atrasar a ação de esconder as cartas
                 Timer timer = new Timer(1000, e -> {
-                    botoes[posicao_da_casa1].setText("");
-                    botoes[posicao_da_casa2].setText("");
-
+                    //botoes[posicao_da_casa1].setText("");
+                    //botoes[posicao_da_casa2].setText("");
+                    botoes[posicao_da_casa1].setIcon(null);
+                    botoes[posicao_da_casa2].setIcon(null);
                     if (vez_de_quem == 1) {
                         vez_de_quem = 2;
                         controle_vez.setText("Vez do jogador: " + String.valueOf(vez_de_quem));

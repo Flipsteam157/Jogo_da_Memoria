@@ -11,4 +11,11 @@
         <maven.compiler.target>21</maven.compiler.target>
         <exec.mainClass>com.mycompany.jogo_da_memoria.Jogo_da_Memoria</exec.mainClass>
     </properties>
+    <build>
+        <resources>
+            <resource>
+                <directory>C:\Imagens\pokemon</directory>
+            </resource>    
+        </resources>    
+    </build>
 </project>
