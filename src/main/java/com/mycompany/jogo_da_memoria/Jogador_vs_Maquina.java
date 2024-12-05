@@ -126,12 +126,10 @@ public class Jogador_vs_Maquina extends Jogo {
         for (Map.Entry<Integer, Integer> entry : memoria.entrySet()) {
             int posicao1 = entry.getKey();
             int valor1 = entry.getValue();
-            memoria.put(posicao1, tabuleiro.board[posicao1]);
             
             for (Map.Entry<Integer, Integer> entry2 : memoria.entrySet()) {
                 int posicao2 = entry2.getKey();
                 int valor2 = entry2.getValue();
-                memoria.put(posicao2, tabuleiro.board[posicao2]);
                 if (posicao1 != posicao2 && valor1 == valor2 && vetor_verificador[posicao1] == 0 && vetor_verificador[posicao2] == 0) {
                     // Encontrou um par
                     executarJogada(posicao1 + 1, posicao2 + 1);
@@ -140,18 +138,30 @@ public class Jogador_vs_Maquina extends Jogo {
             }
         }
 
-        // Se não encontrou um par, escolhe posições aleatórias
+        // Escolhe a primeira posição aleatória caso nao tenha nenhum par na memoria
         int posicao1 = escolherPosicaoAleatoria();
-        int posicao2 = escolherPosicaoAleatoria();
+        memoria.put(posicao1, tabuleiro.board[posicao1]);
 
+        // Verifica se a primeira posição forma um par com algum valor na memória
+        for (Map.Entry<Integer, Integer> entry : memoria.entrySet()) {
+            int posicaoMemoria = entry.getKey();
+            int valorMemoria = entry.getValue();
+
+            if (posicao1 != posicaoMemoria && tabuleiro.board[posicao1] == valorMemoria && vetor_verificador[posicaoMemoria] == 0) {
+                // Jogar no par encontrado
+                executarJogada(posicao1 + 1, posicaoMemoria + 1);
+                return;
+            }
+        }
+
+        // Caso não encontre par, escolhe a segunda posição aleatória
+        int posicao2 = escolherPosicaoAleatoria();
         while (posicao1 == posicao2) {
             posicao2 = escolherPosicaoAleatoria();
         }
-
-        // Armazena as posições aleatórias reveladas pela máquina na memória
-        memoria.put(posicao1, tabuleiro.board[posicao1]);
         memoria.put(posicao2, tabuleiro.board[posicao2]);
 
+        // Realiza a jogada
         executarJogada(posicao1 + 1, posicao2 + 1);
     }
 
