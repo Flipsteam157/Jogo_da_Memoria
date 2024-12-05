@@ -14,7 +14,7 @@
     <build>
         <resources>
             <resource>
-                <directory>C:\Imagens\pokemon</directory>
+                <directory>src/main/java/pokemon</directory>
             </resource>    
         </resources>    
     </build>

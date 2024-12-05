@@ -1,6 +1,11 @@
 package com.mycompany.jogo_da_memoria;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.Timer;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +19,25 @@ public class Jogador_vs_Maquina extends Jogo {
 
     public Jogador_vs_Maquina() {
         super();
-        placar2.setText("Máquina: 0 Pontos");
+        placar2.setText("Maquina: 0 Pontos");
+        try{
+            Font gameboy = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/pokemon/Early GameBoy.ttf"));
+            Font gameboy12 = gameboy.deriveFont(12f);
+            Font gameboy18 = gameboy.deriveFont(18f);
+            
+            Font pokemon = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/pokemon/Pokemon Hollow.ttf"));
+            Font pokemon30 = pokemon.deriveFont(30f);
+            
+            placar1.setFont(gameboy12);
+            placar2.setFont(gameboy12);
+            controle_vez.setFont(gameboy12);
+            
+            this.getContentPane().setBackground(Color.yellow);
+            this.setTitle("Jogador vs Máquina");
+        }
+        catch (FontFormatException | IOException e) {
+            System.out.println("Erro na Fonte");
+        }
     }
 
     @Override
@@ -53,7 +76,7 @@ public class Jogador_vs_Maquina extends Jogo {
                     placar1.setText("Jogador 1: " + placar_jogador1 + " Pontos");
                 } else {
                     placar_jogador2 += 1;
-                    placar2.setText("Máquina: " + placar_jogador2 + " Pontos");
+                    placar2.setText("Maquina: " + placar_jogador2 + " Pontos");
                 }
 
                 if (placar_jogador1 + placar_jogador2 == 8) {
@@ -81,7 +104,7 @@ public class Jogador_vs_Maquina extends Jogo {
 
                     if (vez_de_quem == 1) {
                         vez_de_quem = 2;
-                        controle_vez.setText("Vez da máquina");
+                        controle_vez.setText("Vez da maquina");
                         Timer machineTurnTimer = new Timer(500, evt -> maquinaJoga());
                         machineTurnTimer.setRepeats(false);
                         machineTurnTimer.start();
@@ -103,11 +126,12 @@ public class Jogador_vs_Maquina extends Jogo {
         for (Map.Entry<Integer, Integer> entry : memoria.entrySet()) {
             int posicao1 = entry.getKey();
             int valor1 = entry.getValue();
-
+            memoria.put(posicao1, tabuleiro.board[posicao1]);
+            
             for (Map.Entry<Integer, Integer> entry2 : memoria.entrySet()) {
                 int posicao2 = entry2.getKey();
                 int valor2 = entry2.getValue();
-
+                memoria.put(posicao2, tabuleiro.board[posicao2]);
                 if (posicao1 != posicao2 && valor1 == valor2 && vetor_verificador[posicao1] == 0 && vetor_verificador[posicao2] == 0) {
                     // Encontrou um par
                     executarJogada(posicao1 + 1, posicao2 + 1);
@@ -151,7 +175,7 @@ public class Jogador_vs_Maquina extends Jogo {
         if (placar_jogador1 > placar_jogador2) {
             controle_vez.setText("VENCEDOR: JOGADOR 1");
         } else if (placar_jogador1 < placar_jogador2) {
-            controle_vez.setText("VENCEDOR: MÁQUINA");
+            controle_vez.setText("VENCEDOR: MAQUINA");
         } else {
             controle_vez.setText("EMPATE");
         }
