@@ -11,18 +11,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class Jogador_vs_Maquina extends Jogo {
 
     private final Map<Integer, Integer> memoria = new HashMap<>();
     private final Random random = new Random();
+    private JButton voltarButton;
+    
 
     public Jogador_vs_Maquina() {
         super();
         placar2.setText("Maquina: 0 Pontos");
+        Font gameboy12 = null;
         try{
             Font gameboy = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/pokemon/Early GameBoy.ttf"));
-            Font gameboy12 = gameboy.deriveFont(12f);
+            gameboy12 = gameboy.deriveFont(12f);
             Font gameboy18 = gameboy.deriveFont(18f);
             
             Font pokemon = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/pokemon/Pokemon Hollow.ttf"));
@@ -38,7 +42,26 @@ public class Jogador_vs_Maquina extends Jogo {
         catch (FontFormatException | IOException e) {
             System.out.println("Erro na Fonte");
         }
+        voltarButton = new JButton("Voltar");
+        voltarButton.setFont(gameboy12);  
+        voltarButton.setBounds((this.getWidth() - voltarButton.getPreferredSize().width) / 2, 
+        (this.getHeight() - voltarButton.getPreferredSize().height) / 2, 
+        180, 30); 
+        voltarButton.setVisible(false);
+        voltarButton.addActionListener(e -> {
+        pararMusica();
+        Tela_inicial telaInicial = new Tela_inicial();
+        telaInicial.setVisible(true);
+        this.dispose();
+    });
+    this.setLayout(null); // Ajuste a posição e tamanho conforme necessário
+    this.add(voltarButton);
     }
+    
+    
+ 
+    
+    
 
     @Override
     public void rodada(int verificar, int posicao) {
@@ -82,6 +105,10 @@ public class Jogador_vs_Maquina extends Jogo {
                 if (placar_jogador1 + placar_jogador2 == 8) {
                     controle_vez.setText("JOGO ACABOU");
                     mostrarVencedor();
+                    voltarButton.setVisible(true); 
+                    for (JButton botoesCasa : botoes) {
+                        botoesCasa.setVisible(false); // Esconde todos os botões das casas
+                    }
                 } else {
                     // Máquina continua jogando se for a vez dela
                     if (vez_de_quem == 2) {

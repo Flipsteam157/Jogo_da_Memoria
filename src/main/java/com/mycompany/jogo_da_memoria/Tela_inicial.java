@@ -10,17 +10,17 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import javax.sound.sampled.*;
 
-/**
- *
- * @author RonaldoKaeser
- */
+
 public class Tela_inicial extends javax.swing.JFrame {
-
+    private Clip clip;
     
     public Tela_inicial(){
+        setLocationRelativeTo(null);
         initComponents();
         /**/
+         tocarMusica("src/main/java/pokemon/Pokémon-Theme-Song-_Music-Video_.wav");
         try{
             Font gameboy = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/pokemon/Early GameBoy.ttf"));
             Font gameboy12 = gameboy.deriveFont(12f);
@@ -41,6 +41,30 @@ public class Tela_inicial extends javax.swing.JFrame {
         }
     }
     
+     private void tocarMusica(String caminhoMusica) {
+        try {
+            // Carregar o arquivo de áudio
+            File arquivoMusica = new File(caminhoMusica);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(arquivoMusica);
+
+            // Configurar o Clip
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+
+            // Tocar o áudio
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao reproduzir música: " + e.getMessage());
+        }
+    }
+     
+      private void pararMusica() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+            clip.close(); 
+        }
+    }
 
 
     /**
@@ -120,6 +144,7 @@ public class Tela_inicial extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+         pararMusica();
         Jogo jogo = new Jogador_vs_Jogador();
         jogo.setVisible(true);
         this.setVisible(false);
@@ -127,6 +152,7 @@ public class Tela_inicial extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+         pararMusica();
         Jogo joguinho = new Jogador_vs_Maquina();
         joguinho.setVisible(true);
         this.setVisible(false);

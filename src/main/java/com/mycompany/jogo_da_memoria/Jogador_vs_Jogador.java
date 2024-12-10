@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.Timer;
 
 /**
@@ -19,11 +20,14 @@ import javax.swing.Timer;
  */
 public class Jogador_vs_Jogador extends Jogo {
 
+    private JButton voltarButton;
+    
     public Jogador_vs_Jogador() {
         super();
+        Font gameboy12 = null;
         try{
             Font gameboy = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/pokemon/Early GameBoy.ttf"));
-            Font gameboy12 = gameboy.deriveFont(12f);
+            gameboy12 = gameboy.deriveFont(12f);
             Font gameboy18 = gameboy.deriveFont(18f);
             
             Font pokemon = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/pokemon/Pokemon Hollow.ttf"));
@@ -39,7 +43,23 @@ public class Jogador_vs_Jogador extends Jogo {
         catch (FontFormatException | IOException e) {
             System.out.println("Erro na Fonte");
         }
+        voltarButton = new JButton("Voltar");
+        voltarButton.setFont(gameboy12);  
+        voltarButton.setBounds(
+        (this.getWidth() - voltarButton.getPreferredSize().width) / 2, // Centraliza horizontalmente
+        (this.getHeight() - voltarButton.getPreferredSize().height) / 2, // Centraliza verticalmente
+        180, 30); // Tamanho do botão); 
+        voltarButton.setVisible(false);
+        voltarButton.addActionListener(e -> {
+        pararMusica();
+        Tela_inicial telaInicial = new Tela_inicial();
+        telaInicial.setVisible(true);
+        this.dispose();
+    });
+    this.setLayout(null); // Ajuste a posição e tamanho conforme necessário
+    this.add(voltarButton);
     }
+  
 
     @Override
     public void rodada(int verificar, int posicao) {
@@ -85,6 +105,10 @@ public class Jogador_vs_Jogador extends Jogo {
 
                 if (placar_jogador1 + placar_jogador2 == 8) {
                     controle_vez.setText("JOGO ACABOU");
+                    voltarButton.setVisible(true);
+                    for (JButton botoesCasa : botoes) {
+                        botoesCasa.setVisible(false); // Esconde todos os botões das casas
+                    }
                 } else {
                     bloquearBotoes(true);
                 }
